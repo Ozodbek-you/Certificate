@@ -14,24 +14,24 @@ class CustomUserManager(BaseUserManager):
         user.set_password(password)
         user.save(using = self._db)
         return user
-    def create_superuser(self,phone_number,password,**extra_fields):
-        extra_fields.setdefault('is_admin',True)
-        extra_fields.setdefault('is_staff',True)
+    def create_superuser(self, phone_number, password=None, **extra_fields):
+        extra_fields.setdefault("is_staff", True)      # 🔹 muhim
+        extra_fields.setdefault("is_superuser", True)  # 🔹 muhim
+        extra_fields.setdefault("is_active", True)
 
-        if extra_fields.get('is_admin') is not True:
-            raise ValueError("Superuser is_admin = True bo'lishi kerak")
-        if extra_fields.setdefault('is_staff') is not True:
-            raise ValueError("Superuser is_staff = True bo'lish kerak")
+        if extra_fields.get("is_staff") is not True:
+            raise ValueError("Superuser uchun is_staff=True bo‘lishi kerak")
 
-        return self.create_user(phone_number,password,**extra_fields)
+        return self.create_user(phone_number, password, **extra_fields)
+class BaseModel(models.Model):
+    created_ed = models.DateField(auto_now_add=True)
+    updated_ed = models.DateField(auto_now=True)
+
+    class Meta:
+        abstract = True
 
 
 class User(AbstractBaseUser,PermissionsMixin):
-    phone_regex = RegexValidator(
-        regex=r'^\+9989\d{8}$',
-        message="telefon raqam tog'ri kelishi kerak"
-    )
-    phone_number = models.CharField(validators=[phone_regex],max_length=13,unique=True)
     password = models.CharField()
     sms_kod = models.CharField(max_length=4,null=True,blank=True)
     email = models.EmailField(unique=True,null=True,blank=True)
@@ -39,12 +39,13 @@ class User(AbstractBaseUser,PermissionsMixin):
     is_active = models.BooleanField(default=True)
     is_student = models.BooleanField(default=False)
     is_teacher = models.BooleanField(default=False)
+    is_staff  = models.BooleanField(default=False)
 
     objects = CustomUserManager()
-    USERNAME_FIELD = 'phone_number'
+    USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
     def __str__(self):
-        return self.phone_number
+        return self.email
 
     @property
     def is_superuser(self):

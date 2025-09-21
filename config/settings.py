@@ -53,10 +53,21 @@ MIDDLEWARE = [
 ]
 
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
-    )
+    'DEFAULT_RENDERER_CLASSES': [
+        'rest_framework.renderers.JSONRenderer',   # ✅ JSON
+        'rest_framework.renderers.BrowsableAPIRenderer',  # ✅ DRF web UI
+    ]
 }
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
+# Gmail SMTP server sozlamalari
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+
+# Gmail hisobingiz
+EMAIL_HOST_USER = 'ozodbekaxmadjonov30@gmail.com'
+EMAIL_HOST_PASSWORD = 'zvfl keyj mjsc ikic'
 
 ROOT_URLCONF = 'config.urls'
 
