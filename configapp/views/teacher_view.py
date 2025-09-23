@@ -9,20 +9,6 @@ from rest_framework import status
 from django.core.mail import send_mail
 from django.conf import settings
 
-
-class SendEmailApi(APIView):
-    @swagger_auto_schema(request_body=SendEmail)
-    def post(self, request):
-        subject = "Salom Django'dan!"
-        message = request.data.get("text")
-        email = request.data.get("email")
-        email_from = settings.EMAIL_HOST_USER
-        recipient_list = [f'{email}']
-
-        send_mail(subject, message, email_from, recipient_list)
-
-        return Response(data={f'{email}': 'yuborildi'})
-
 class TeacherCreateApi(ModelViewSet):
     queryset = Teacher.objects.all()
     serializer_class = UserAndTeacherSerializer
@@ -54,4 +40,10 @@ class TeacherCreateApi(ModelViewSet):
             "teacher": teacher_serializer.data
         }, status=status.HTTP_201_CREATED)
 
+class DepartmentAPI(ModelViewSet):
+    queryset = Departments.objects.all()
+    serializer_class = DepartmentsSerializer
 
+class CourseAPI(ModelViewSet):
+    queryset = Course.objects.all()
+    serializer_class = CourseSerializer

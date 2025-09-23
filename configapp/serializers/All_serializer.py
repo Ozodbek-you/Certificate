@@ -5,6 +5,7 @@ class StudentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Student
         fields = '__all__'
+        read_only_fields = ['user']
 
 class UserSerializer(serializers.ModelSerializer):
     is_active = serializers.BooleanField(read_only=True)
@@ -27,7 +28,6 @@ class UserAndTeacherSerializer(serializers.Serializer):
 
 
 class SendEmail(serializers.Serializer):
-    text = serializers.CharField()
     email = serializers.EmailField()
 
 class DepartmentsSerializer(serializers.ModelSerializer):
@@ -43,3 +43,7 @@ class CourseSerializer(serializers.ModelSerializer):
 class VerifySerializer(serializers.Serializer):
     email = serializers.EmailField()
     verify_kod =serializers.CharField()
+
+class StudentAndUserSerializer(serializers.Serializer):
+    user = UserSerializer()
+    student = StudentSerializer()

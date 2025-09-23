@@ -2,7 +2,7 @@ from django.db import models
 
 from configapp.models import *
 
-
+from .auth_teacher import *
 
 class Day(BaseModel):
     title = models.CharField(max_length=50)
@@ -20,7 +20,7 @@ class Rooms(BaseModel):
     def __str__(self):
         return self.title
 
-class Tabletype(BaseModel):
+class TableType(BaseModel):
     title = models.CharField(max_length=50)
     descriptions = models.CharField(max_length=500, null=True, blank=True)
 
@@ -31,7 +31,7 @@ class Table(BaseModel):
     start_time = models.TimeField()
     end_time = models.TimeField()
     room = models.ForeignKey(Rooms, on_delete=models.RESTRICT)
-    type = models.ForeignKey(Tabletype, on_delete=models.RESTRICT)
+    type = models.ForeignKey(TableType, on_delete=models.RESTRICT)
     descriptions = models.CharField(max_length=500, null=True, blank=True)
 
 
