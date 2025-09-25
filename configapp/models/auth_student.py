@@ -8,7 +8,7 @@ from .auth_group import *
 class Student(BaseModel):
     full_name = models.CharField()
     user=models.OneToOneField(User ,on_delete=models.CASCADE)
-    group = models.ManyToManyField(GroupStudent,related_name='get_group')
+    group = models.ForeignKey(GroupStudent,on_delete=models.CASCADE)
     is_line =models.BooleanField(default=False)
     descriptions = models.TextField(blank=True,null=True)
 
